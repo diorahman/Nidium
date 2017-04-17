@@ -1,10 +1,11 @@
 /*
-   Copyright 2016 Nidium Inc. All rights reserved.
+   Copyright 2017 Nidium Inc. All rights reserved.
    Use of this source code is governed by a MIT license
    that can be found in the LICENSE file.
 */
 
 {
+    const s_ShadowRoot = require("../Symbols.js").ElementShadowRoot;
 
     Canvas.prototype.addMultiple = function(...canvases) {
         for (let canvas of canvases) {
@@ -18,7 +19,7 @@
         Inject a 'Layout syntax tree' (LST) into the element.
     */
     Canvas.prototype.inject = function(nml) {
-        this.addMultiple(...NML.CreateTree(nml));
+        NML.CreateTree(nml, this, this[s_ShadowRoot]);
     }
 
     /*
@@ -43,13 +44,13 @@
 
         return ret;
     }
-    
+   
     Object.defineProperty(Canvas.prototype, "inherit", {
         get: function() {
             if (!this.__inheritProxy) {
                 this.__inheritProxy = new Proxy({}, {
                     get: (target, prop, rcv) => {
-                        if (prop in target) {
+                        if (prop in target && target[prop] != undefined) {
                             return target[prop];
                         }
 

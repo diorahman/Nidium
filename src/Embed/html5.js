@@ -5,7 +5,7 @@
 */
 
 {
-    const Elements = require("./lib/Elements.js");
+    const Elements = require("Elements");
     const OS = require("OS");
     const IS_MOBILE = OS.platform == "ios" || OS.platform == "android";
 
